@@ -1,0 +1,19 @@
+
+- name: Ensure Java is installed.
+  apt:
+    name: "{{ java_packages }}"
+    state: present
+    update_cache: yes
+
+
+- name: copy build file from local to remote server 
+  copy:
+    src: /Docker-Project/target/spring-petclinic-2.7.0-SNAPSHOT.jar 
+    dest: /spring-petclinic.jar
+
+
+- name: running the build file
+  become: True
+  shell: java -jar /spring-petclinic.jar
+  async: 20
+  poll: 0
